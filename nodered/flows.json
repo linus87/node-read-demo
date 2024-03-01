@@ -1,0 +1,224 @@
+[
+    {
+        "id": "05c391f4edb14b2a",
+        "type": "tab",
+        "label": "qa",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2e724d3323b8757e",
+        "type": "tab",
+        "label": "prod",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4a8862a1b2aa5d72",
+        "type": "subflow",
+        "name": "QA-CSGetReturnDetail",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "17532d8080b42cd9"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 800,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "c8d4c47ed1ca6cab",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "17532d8080b42cd9",
+        "type": "function",
+        "z": "4a8862a1b2aa5d72",
+        "name": "CSGetReturnDetail",
+        "func": "\n\nvar token=msg.req.headers.token\nvar ReturnID = msg.req.query.returnID || msg.req.body.returnID\n\nvar soapString = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><soapenv:Header><RequesterCredentials  xmlns=\"urn:ebay:apis:eBLBaseComponents\"><eBayAuthToken>'+token+'</eBayAuthToken></RequesterCredentials></soapenv:Header><soapenv:Body>'\nsoapString += '<CSGetReturnDetailRequest xmlns=\"urn:ebay:apis:eBLBaseComponents\">'\nsoapString += '<Version>999</Version>'\nsoapString += '<ReturnID>' + ReturnID + '</ReturnID>'\nsoapString += '<ReturnRole>SYSTEM</ReturnRole>'\nsoapString += '</CSGetReturnDetailRequest></soapenv:Body></soapenv:Envelope>'\n\nmsg.payload=soapString;\nmsg.rejectUnauthorized=false\nmsg.headers = {};\nmsg.headers={ \n    'SOAPAction': 'NoneRequired',\n    'Content-Type': 'text/xml'\n};\nnode.warn(msg)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 160,
+        "wires": [
+            [
+                "d2bdd89a81ffe97e"
+            ]
+        ]
+    },
+    {
+        "id": "d2bdd89a81ffe97e",
+        "type": "http request",
+        "z": "4a8862a1b2aa5d72",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://csapi1.vip.qa.ebay.com/ws/websvc/cssoapapi/CSGetReturnDetail",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 460,
+        "y": 160,
+        "wires": [
+            [
+                "c8d4c47ed1ca6cab"
+            ]
+        ]
+    },
+    {
+        "id": "c8d4c47ed1ca6cab",
+        "type": "xml",
+        "z": "4a8862a1b2aa5d72",
+        "name": "",
+        "property": "payload",
+        "attr": "",
+        "chr": "",
+        "x": 690,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "06d17ec59a37003f",
+        "type": "inject",
+        "z": "05c391f4edb14b2a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "849392cfa141c296"
+            ]
+        ]
+    },
+    {
+        "id": "849392cfa141c296",
+        "type": "function",
+        "z": "05c391f4edb14b2a",
+        "name": "function 1",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "eb1145cc06821fbf",
+        "type": "http request",
+        "z": "05c391f4edb14b2a",
+        "name": "[GET]/test/returnDetail",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "/test/returnDetail",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 220,
+        "y": 280,
+        "wires": [
+            [
+                "5041ea0b72c873dc"
+            ]
+        ]
+    },
+    {
+        "id": "561c5b3314a84605",
+        "type": "http response",
+        "z": "05c391f4edb14b2a",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 970,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "5041ea0b72c873dc",
+        "type": "subflow:4a8862a1b2aa5d72",
+        "z": "05c391f4edb14b2a",
+        "name": "",
+        "x": 500,
+        "y": 280,
+        "wires": [
+            [
+                "7edf1fce2674552e"
+            ]
+        ]
+    },
+    {
+        "id": "7edf1fce2674552e",
+        "type": "function",
+        "z": "05c391f4edb14b2a",
+        "name": "function 2",
+        "func": "var xml = msg.payload\nnode.error(msg.payload)\nmsg.caseflag = false;\nmsg.findflag = false;\nif (xml['soapenv:Envelope']['soapenv:Body'][0]['CSGetReturnDetailResponse'] !== undefined) {\n    var response = xml['soapenv:Envelope']['soapenv:Body'][0]['CSGetReturnDetailResponse'][0]\n    if (response.Ack[0] == 'Success') {\n        var EBPCaseID = response.ReturnSummary[0].EBPCaseID[0];\n        var ReturnState = response.ReturnSummary[0].ReturnState[0];\n        var ReturnStatus = response.ReturnSummary[0].ReturnStatus[0];\n        var DeliveryStatus = response.ReturnDetail[0].BuyerReturnShipment[0].DeliveryStatus\n        if (DeliveryStatus) {\n            DeliveryStatus = DeliveryStatus[0]\n        } else {\n            DeliveryStatus = \"\"\n        }\n        var sellerId = response.ReturnSummary[0].Seller[0].MemberID[0].UserOracleID[0]\n        var sellerName = response.ReturnSummary[0].Seller[0].MemberID[0].UserID[0]\n        var itemId = response.ReturnDetail[0].ItemDetails[0].ItemID[0]\n        msg.req.query.claimID = EBPCaseID\n        msg.req.query.User_id = sellerId\n        msg.req.query.itemId = itemId\n        if (isNaN(EBPCaseID)) {\n            msg.caseflag = true\n            msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: sellerId, SellerName: sellerName, ItemId: itemId }\n        } else {\n\n            msg.result = { EBPCaseID: EBPCaseID, DeliveryStatus: DeliveryStatus, ReturnState: ReturnState, ReturnStatus: ReturnStatus, SellerId: sellerId, SellerName: sellerName, ItemId: itemId }\n        }\n\n\n    } else {\n        msg.findflag = true;\n        msg.caseflag = true\n        msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: \"\", SellerName: \"\", ItemId: \"\" }\n\n    }\n} else {\n    msg.findflag = true;\n    msg.caseflag = true\n    msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: \"\", SellerName: \"\", ItemId: \"\" }\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 280,
+        "wires": [
+            [
+                "561c5b3314a84605"
+            ]
+        ]
+    }
+]

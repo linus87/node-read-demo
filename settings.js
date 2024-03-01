@@ -81,6 +81,7 @@ module.exports = {
         //        permissions: "*"
         //    }]
         //},
+        adminAuth: require("./user-authentication"),
     
         /** The following property can be used to enable HTTPS
          * This property can be either an object, containing both a (private) key
