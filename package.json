@@ -1,0 +1,23 @@
+{
+  "name": "node-red-demo",
+  "version": "1.0.0",
+  "description": "Demo of nede red",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node-red"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linus87/node-red-demo.git"
+  },
+  "author": "linus.yan",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/linus87/node-red-demo/issues"
+  },
+  "homepage": "https://github.com/linus87/node-red-demo#readme",
+  "dependencies": {
+    "node-red": "^3.1.5"
+  }
+}
