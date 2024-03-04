@@ -131,49 +131,7 @@
         "y": 160,
         "wires": [
             [
-                "849392cfa141c296"
-            ]
-        ]
-    },
-    {
-        "id": "849392cfa141c296",
-        "type": "function",
-        "z": "05c391f4edb14b2a",
-        "name": "function 1",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 380,
-        "y": 160,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "eb1145cc06821fbf",
-        "type": "http request",
-        "z": "05c391f4edb14b2a",
-        "name": "[GET]/test/returnDetail",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "/test/returnDetail",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 220,
-        "y": 280,
-        "wires": [
-            [
-                "5041ea0b72c873dc"
+                "7f992ffd30d91dca"
             ]
         ]
     },
@@ -184,7 +142,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 730,
+        "x": 970,
         "y": 280,
         "wires": []
     },
@@ -197,7 +155,61 @@
         "y": 280,
         "wires": [
             [
+                "7edf1fce2674552e"
+            ]
+        ]
+    },
+    {
+        "id": "7edf1fce2674552e",
+        "type": "function",
+        "z": "05c391f4edb14b2a",
+        "name": "function 2",
+        "func": "var xml = msg.payload\nnode.error(msg.payload)\nmsg.caseflag = false;\nmsg.findflag = false;\nif (xml['soapenv:Envelope']['soapenv:Body'][0]['CSGetReturnDetailResponse'] !== undefined) {\n    var response = xml['soapenv:Envelope']['soapenv:Body'][0]['CSGetReturnDetailResponse'][0]\n    if (response.Ack[0] == 'Success') {\n        var EBPCaseID = response.ReturnSummary[0].EBPCaseID[0];\n        var ReturnState = response.ReturnSummary[0].ReturnState[0];\n        var ReturnStatus = response.ReturnSummary[0].ReturnStatus[0];\n        var DeliveryStatus = response.ReturnDetail[0].BuyerReturnShipment[0].DeliveryStatus\n        if (DeliveryStatus) {\n            DeliveryStatus = DeliveryStatus[0]\n        } else {\n            DeliveryStatus = \"\"\n        }\n        var sellerId = response.ReturnSummary[0].Seller[0].MemberID[0].UserOracleID[0]\n        var sellerName = response.ReturnSummary[0].Seller[0].MemberID[0].UserID[0]\n        var itemId = response.ReturnDetail[0].ItemDetails[0].ItemID[0]\n        msg.req.query.claimID = EBPCaseID\n        msg.req.query.User_id = sellerId\n        msg.req.query.itemId = itemId\n        if (isNaN(EBPCaseID)) {\n            msg.caseflag = true\n            msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: sellerId, SellerName: sellerName, ItemId: itemId }\n        } else {\n\n            msg.result = { EBPCaseID: EBPCaseID, DeliveryStatus: DeliveryStatus, ReturnState: ReturnState, ReturnStatus: ReturnStatus, SellerId: sellerId, SellerName: sellerName, ItemId: itemId }\n        }\n\n\n    } else {\n        msg.findflag = true;\n        msg.caseflag = true\n        msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: \"\", SellerName: \"\", ItemId: \"\" }\n\n    }\n} else {\n    msg.findflag = true;\n    msg.caseflag = true\n    msg.result = { EBPCaseID: \"\", DeliveryStatus: \"\", ReturnState: \"\", ReturnStatus: \"\", SellerId: \"\", SellerName: \"\", ItemId: \"\" }\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 280,
+        "wires": [
+            [
                 "561c5b3314a84605"
+            ]
+        ]
+    },
+    {
+        "id": "7f992ffd30d91dca",
+        "type": "debug",
+        "z": "05c391f4edb14b2a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a59a7d431334c237",
+        "type": "http in",
+        "z": "05c391f4edb14b2a",
+        "name": "",
+        "url": "/test/returnDetail",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 220,
+        "y": 280,
+        "wires": [
+            [
+                "5041ea0b72c873dc"
             ]
         ]
     }

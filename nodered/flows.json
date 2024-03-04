@@ -131,49 +131,7 @@
         "y": 160,
         "wires": [
             [
-                "849392cfa141c296"
-            ]
-        ]
-    },
-    {
-        "id": "849392cfa141c296",
-        "type": "function",
-        "z": "05c391f4edb14b2a",
-        "name": "function 1",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 380,
-        "y": 160,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "eb1145cc06821fbf",
-        "type": "http request",
-        "z": "05c391f4edb14b2a",
-        "name": "[GET]/test/returnDetail",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "/test/returnDetail",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 220,
-        "y": 280,
-        "wires": [
-            [
-                "5041ea0b72c873dc"
+                "7f992ffd30d91dca"
             ]
         ]
     },
@@ -218,6 +176,40 @@
         "wires": [
             [
                 "561c5b3314a84605"
+            ]
+        ]
+    },
+    {
+        "id": "7f992ffd30d91dca",
+        "type": "debug",
+        "z": "05c391f4edb14b2a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a59a7d431334c237",
+        "type": "http in",
+        "z": "05c391f4edb14b2a",
+        "name": "",
+        "url": "api/test/returnDetail",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 280,
+        "wires": [
+            [
+                "5041ea0b72c873dc"
             ]
         ]
     }
